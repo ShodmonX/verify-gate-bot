@@ -25,7 +25,7 @@ def normalize_word(text: str) -> str:
     return text.strip().lower()
 
 
-@router.message()
+@router.message(lambda message: message.chat.type == "private")
 async def on_dm_message(
     message: Message, bot: Bot, sessionmaker: async_sessionmaker[AsyncSession]
 ) -> None:

@@ -3,7 +3,7 @@ import contextlib
 import logging
 
 from aiogram import Bot, Dispatcher
-from aiogram.types import BotCommand
+from aiogram.types import BotCommand, BotCommandScopeAllPrivateChats
 from aiogram.client.default import DefaultBotProperties
 from alembic import command
 from alembic.config import Config
@@ -31,7 +31,10 @@ async def main() -> None:
     logger.info("Starting bot in polling mode")
 
     bot = Bot(token=settings.BOT_TOKEN, default=DefaultBotProperties(parse_mode="HTML"))
-    await bot.set_my_commands([BotCommand(command="start", description="Botni ishga tushurish")])
+    await bot.set_my_commands(
+        [BotCommand(command="start", description="Botni ishga tushurish")],
+        scope=BotCommandScopeAllPrivateChats(),
+    )
     dp = Dispatcher()
     dp["sessionmaker"] = AsyncSessionLocal
     await seed_from_file_if_empty(AsyncSessionLocal)
